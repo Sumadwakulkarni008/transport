@@ -1,54 +1,174 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Transportio – Transportation Services</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>College Transport Portal</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* CONTAINER */
+    .container {
+      width: 350px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input, select {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    button {
+      width: 95%;
+      padding: 10px;
+      background: #ff6bcb;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      box-shadow: 0 0 25px #ff2dc0;
+      background: #ff2dc0;
+    }
+
+    .link {
+      margin-top: 10px;
+      color: #ffeb3b;
+      cursor: pointer;
+      font-size: 14px;
+      display: block;
+    }
+
+    /* DASHBOARD STYLE */
+    .dashboard {
+      display: none;
+      width: 400px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+    }
+
+    .glow:hover {
+      box-shadow: 0 0 30px #0ff, 0 0 60px #00e6e6;
+      transition: 0.3s;
+    }
+
+    .fare-output {
+      font-size: 20px;
+      margin-top: 10px;
+    }
+  </style>
 </head>
+
 <body>
-    <header>
-        <nav>
-            <div class="logo">Transportio</div>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section id="home" class="hero">
-            <h1>Reliable Transportation Services</h1>
-            <p>Your trusted partner in logistics and travel solutions</p>
-        </section>
-        <section id="services">
-            <h2>Our Services</h2>
-            <ul class="service-list">
-                <li>City Transport</li>
-                <li>Parcel Delivery</li>
-                <li>Long Haul Freight</li>
-            </ul>
-        </section>
-        <section id="about">
-            <h2>About Us</h2>
-            <p>We provide safe and reliable transportation options tailored to your needs.</p>
-        </section>
-        <section id="contact">
-            <h2>Contact</h2>
-            <form>
-                <input type="text" placeholder="Your Name" required />
-                <input type="email" placeholder="Your Email" required />
-                <textarea placeholder="Your Message"></textarea>
-                <button type="submit">Send</button>
-            </form>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 Transportio. All rights reserved.</p>
-    </footer>
-    <script src="script.js"></script>
+  <!-- LOGIN / SIGNUP FORM -->
+  <div class="container" id="auth-box">
+    <h2 id="form-title">Login</h2>
+    <input type="email" id="email" placeholder="Enter Gmail" required />
+    <input type="password" id="password" placeholder="Enter Password" required />
+    <button onclick="login()">Login</button>
+    <span class="link" onclick="toggleForm()">Create Account</span>
+  </div>
+
+  <!-- DASHBOARD SECTION -->
+  <div class="dashboard glow" id="dashboard">
+    <h2>Welcome to College Bus Booking</h2>
+    <select id="pickup">
+      <option value="">Select Pickup Point</option>
+      <option value="Hostel Road">Hostel Road</option>
+      <option value="Library Point">Library Point</option>
+      <option value="City Mall">City Mall</option>
+    </select>
+    <div class="fare-output" id="fare">Fare: --</div>
+    <button onclick="calculateFare()">Show Amount</button>
+    <button style="margin-top:10px;background:#4CAF50" onclick="bookBus()">Book Now</button>
+  </div>
+
+  <script>
+    let isSignup = false;
+    const pickupRates = {
+      "Hostel Road": 10,
+      "Library Point": 15,
+      "City Mall": 20
+    };
+
+    function toggleForm() {
+      const title = document.getElementById('form-title');
+      const button = document.querySelector('#auth-box button');
+      const link = document.querySelector('.link');
+      isSignup = !isSignup;
+      if (isSignup) {
+        title.innerText = "Create Account";
+        button.innerText = "Sign Up";
+        link.innerText = "Already have an account? Login";
+      } else {
+        title.innerText = "Login";
+        button.innerText = "Login";
+        link.innerText = "Create Account";
+      }
+    }
+
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      if (email && password) {
+        document.getElementById("auth-box").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+      } else {
+        alert("Please fill all fields.");
+      }
+    }
+
+    function calculateFare() {
+      const pickup = document.getElementById("pickup").value;
+      const fareDisplay = document.getElementById("fare");
+      if (pickup && pickupRates[pickup]) {
+        fareDisplay.innerText = `Fare: ₹${pickupRates[pickup]}`;
+      } else {
+        fareDisplay.innerText = "Fare: --";
+      }
+    }
+
+    function bookBus() {
+      const pickup = document.getElementById("pickup").value;
+      if (pickup) {
+        alert(`Bus booked from ${pickup}. Fare: ₹${pickupRates[pickup]}`);
+      } else {
+        alert("Please select a pickup point to book.");
+      }
+    }
+  </script>
 </body>
 </html>
